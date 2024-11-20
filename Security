@@ -1,5 +1,39 @@
 http://10.50.33.78/classinfo.html
 
 Stack Number	Username	    Password	        jump
-1 	          LABE-007-M 	  LfPqaHePdeI5xOU 	10.50.30.39
+1 	            LABE-007-M 	    LfPqaHePdeI5xOU 	10.50.30.39
+
+ctfd
+      10.50.20.103:8000
+
+ops station
+	https://vta.cybbh.space/project/instances/
+
+
+
+Phase 1: Mission Definition
+    Define mission goals and targets.
+    Determine scope of mission.
+    What networks are valid targets?
+    What machines are valid targets?
+    What attacks or exploits are authorized/appropriate?
+    Define RoE.
+Phase 2: Recon
+    Information gathering about the target through public sources.
+    Websites, job postings, search engines, etc.
+    Done without touching the target.
+Phase 3: Footprinting
+    Accumulate data through scanning and/or interation with the target/target resources.
+    Use a variety of scanning and fingerprinting to determine information about target networks and devices.
+Phase 4: Exploitation/Initial Access
+    Gain intial foothold into target network
+    There is a more in-depth discussion that is done in exploitation research lesson
+Phase 5: Post-exploitation
+    Establish persistence
+    escalate priveleges
+    obfuscate
+    cover your tracks
+    exfiltrate target data
+Phase 6: Document Mission
+    Document and report mission details.
 
