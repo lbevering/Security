@@ -37,7 +37,8 @@ Phase 5: Post-exploitation
 Phase 6: Document Mission
     Document and report mission details.
 
-______________________________________________________________
+----------------------------------------------------------------
+
 SCRAPING DATA SCRIPT
 
 #!/usr/bin/python
@@ -51,7 +52,8 @@ authors = tree.xpath('//small[@class="author"]/text()')
 
 print ('Authors: ',authors)
 
-_______________________________________________________________
+----------------------------------------------------------------
+
 
 
 Usage and Examples for NMAP Scripts
@@ -62,10 +64,68 @@ Usage and Examples for NMAP Scripts
 	nmap --script-help <filename>|<category>|<directory>
 	nmap --script-trace
 
+for i in {1..254} ;do (ping -c 1 192.168.1.$i | grep "bytes from" &) ;done
 
+---------------------------------------------------------------------------------
 
-
-
+create a master socket to jump box
+	ssh -MS /tmp/jump student@10.50.30.39
+on jump box ping sweep network given 
+	for i in {97..126} ;do (ping -c 1 192.168.28.$i | grep "bytes from" &) ;done
+		OUTPUT:
+		64 bytes from 192.168.28.97: icmp_seq=1 ttl=64 time=4.55 ms
+		64 bytes from 192.168.28.100: icmp_seq=1 ttl=63 time=2.78 ms
+		64 bytes from 192.168.28.99: icmp_seq=1 ttl=63 time=4.74 ms
+		64 bytes from 192.168.28.105: icmp_seq=1 ttl=63 time=0.999 ms
+		64 bytes from 192.168.28.111: icmp_seq=1 ttl=63 time=0.897 ms
+		64 bytes from 192.168.28.120: icmp_seq=1 ttl=63 time=0.732 ms
+		64 bytes from 192.168.28.98: icmp_seq=1 ttl=63 time=57.4 ms
+set up dynamic port forward to master socket to jump box
+	ssh -S /tmp/jump jump -O forward -D9050
+		jump before -O is a filler word thats a syntax requirement
+			choose something that will remind you where its going
+		-O is options
+ss -ntlp
+	verify 9050 is open
+proxychains nmap 192.168.28.100,111
+	scanning the options you gave via proxychains on the dynamic we opened
+proxychains nc <ip> <port>
+	nc ports associated with the ports found with the nmap
+ssh -S /tmp/jump jump -O forward -L1111:192.168.28.100:80 -L2222:192.168.28.100:2222 -L3333:192.168.28.111:80 -L5555:192.168.28.111:2222
+	specify socket file with -S
+	-O forward chooses forward as the option
+	overall goal of this command is to create multiple local port forwards within the same command
+		should not produce an output 
+ss -ntlp
+	make sure ports opened from the previous command
+firefox
+	command in terminal
+	once open use loopback:<port associated to ip:80>
+		ex.: 127.0.0.1:1111 or 3333
+		after getting to website look around for interesting things
+ssh -MS /tmp/t1 creds@127.0.0.1 -p 2222
+	authenticate with first target
+	creates a new master socket as well
+	-p 2222 is the local port opened associated with the first ip with ssh port opened
+for i in {20..40} ;do (ping -c 1 100.200.25.$i | grep "bytes from" &) ;done
+	found the .30 and .35
+ssh -S /tmp/jump jump -O cancel -D9050
+	cancels dynamic port forward to jumpbox
+	use when trying to close any tunnels
+ssh -S /tmp/t1 t1 -O forward -D9050
+	open new dynamic to target after canceling jump box dynamic
+proxychains nmap 100.200.25.30,35
+	scan new found ips
+	found 80 and 2222 on both
+proxychains nc on both ports and ips found
+	80 is http server and 2222 is ssh
+ssh -S /tmp/t1 t1 -O forwards -L4567:100.200.25.30:80 -L2323:100.200.25.30:2222 -L<RHP>:100.200.25.35:80 -L<RHP>:100.200.25.35:2222
+	create new local port forwards to ips and ports found
+enuemerate hosts connected
+	ie: use firefox to connect to 127.0.0.1:4567 in order to get to 100.200.25.30 webpage
+ssh -MS /tmp/t2 creds@127.0.0.1 -p 2323
+	authenticate to new target using previous tunnel
+repeat cycle
 
 
 
