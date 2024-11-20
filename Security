@@ -37,3 +37,62 @@ Phase 5: Post-exploitation
 Phase 6: Document Mission
     Document and report mission details.
 
+______________________________________________________________
+SCRAPING DATA SCRIPT
+
+#!/usr/bin/python
+import lxml.html
+import requests
+
+page = requests.get('http://quotes.toscrape.com')
+tree = lxml.html.fromstring(page.content)
+
+authors = tree.xpath('//small[@class="author"]/text()')
+
+print ('Authors: ',authors)
+
+_______________________________________________________________
+
+
+Usage and Examples for NMAP Scripts
+	nmap --script <filename>|<category>|<directory>
+	nmap --script-help "ftp-* and discovery"
+	nmap --script-args <args>
+	nmap --script-args-file <filename>
+	nmap --script-help <filename>|<category>|<directory>
+	nmap --script-trace
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
