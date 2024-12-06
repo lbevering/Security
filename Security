@@ -319,15 +319,29 @@ exe replacement
 auditpol /get /category:*
 auditpol /get /category:* | findstr /i "success failure"
 
+for i in {1..255} ;do (ping -c 1 192.168.28.$i | grep "bytes from" &) ;done
+
+10.50.29.114
+	ports 22 and 80
+	user2 = EaglesIsARE78
+	user3 = Obo4GURRnccyrf
+	Lee_Roth = anotherpassword4THEages
+
+192.168.28.181
+	ports 22 and 80
+SELECT user_id,name,username FROM siteusers.users
+Aaron 				$Aaron
+user2 				$user2
+user3 				$user3
+Lroth 				$Lee_Roth
+apasswordyPa$$word 		$Aaron
+EaglesIsARE78 			$user2
+Bob4THEEapples			$user3
+anotherpassword4THEages 	$Lroth
 
 
 
-
-
-
-
-
-
+UNION SELECT table_schema,column_name,table_name FROM information_schema.columns
 
 
 
