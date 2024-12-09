@@ -343,15 +343,97 @@ anotherpassword4THEages 	$Lroth
 
 UNION SELECT table_schema,column_name,table_name FROM information_schema.columns
 
+-------------------------------------------------------------------------------------
+DRY RUN NOTES
 
+perform recon
+	nmap scan ip given
+		nc to verify open ports found
+if a port 80
+	run nmap --script=http-enum {ip}
+open ip in firefox
+click on everything possible looking for interesting things
+directory traversal
+	../../../../../../../etc/passwd
+	../../../../../../../etc/hosts
+		take notes of everything possible
+			ie. users with home directories and the hosts file ips if any
+if a login screen use authentication bypass
+	' or 1='1 for both username and password
+	inspect element 
+		network tap
+			request
+				raw
+					use url found for dumped creds
+ssh into box using creds found on website
+	enumerate host
+build master socket, port forward, and dynamic port forward
+proxychains nmap ip found on website
+	nc to verify open ports found
+go to new website found
+	check all options given
+use sql injection on all options till you find the misconfigured option 
+	OR 1=1 #
+	UNION SELECT 1,2,3 #
+	GOLDEN STATEMENT
+		UNION SELECT table_schema,column_name,table_name FROM information_schema.columns
+			modify to get information your looking for
+{recomended to create a list of all inputs to make querying later easier}
+scan ips found previously on current box
+ssh onto new ip found using creds found previously during sql injection
+	if you have to try it with multiple sets of creds then go ahead
+gain root access 
+	via sudo -l 
+		gtfo bins website
+enumerate host
+	scan ips found on system
+gain access to ips found via the ports found during the scan 
+	we find a windows box
+		<port 3389> freexrdp to get on system
+-----------------------------------------------------------------------
 
+MODULE REVIEW
 
-
-
-
-
-
-
+if given an ip then nmap and ping given ip
+	nc output to make sure you know what the ports actually are
+		if port 80 then use hhtp enum script
+if you see pages on a web page then go to them
+	interact with all pages
+		including input fields or buttons
+try whoami first for sql injection 
+	this tells you who the user is as well as if the field is even vulnerable
+		../../../../../../../
+if on a linux system check 
+	/etc/passwd
+	/etc/hosts
+if you find a login page
+	' or 1='1
+		for both username and password
+			use inspect and network tab to pulls creds as well
+log all credentials found 
+	if on a sql server try to locate any and all credentials possible
+identify vulnerable field, identify # of columns, modify golden statement, get database, use user created databases
+	user created databases typically at bottom of output
+windows persistance
+	run keys
+	run once
+	schedule task
+		poorly named 
+		poor or no description
+if you cannot rename an executable then utilize dll hijacking
+linux 
+sudo -l
+	shows you sudo permissions for that user
+netstat -antp
+check for context clues within the questions
+	utilize find command used in networking in order to find things based on context
+find
+	suid/guid
+		gtfo bins
+look at functions
+	dissass within gdb
+rsa keys
+	make sure your cating the correct keys
 
 
 
