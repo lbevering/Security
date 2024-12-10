@@ -435,6 +435,26 @@ look at functions
 rsa keys
 	make sure your cating the correct keys
 
+xfreerdp /v:127.0.0.1:9999 /u:Lroth /p:anotherpassword4THEages /size:1920x1000 +clipboard
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
